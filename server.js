@@ -65,27 +65,29 @@ app.use((req, res) => {
   });
 });
 
+module.exports = app;
 
+if (!process.env.VERCEL) {
+  const HTTP_PORT = process.env.PORT || 8080;
+  Initialize().then(() => {
+    app.listen(HTTP_PORT, () => console.log("Server listening on " + HTTP_PORT));
+  });
+}
+/***
 if (process.env.VERCEL) {
   module.exports = async (req, res) => {
     try {
       await Initialize();
       return app(req, res);
     } catch (err) {
-     res.send("Initialization failed: " + err);
+      res.status(500).send("Initialization failed: " + err);
     }
   };
-}
- else {
+} else {
   const HTTP_PORT = process.env.PORT || 8080;
-  Initialize()
-    .then(() => {
-      app.listen(HTTP_PORT, () => {
-        console.log("Server listening on: " + HTTP_PORT);
-      });
-    })
-    .catch((err) => {
-      console.log("Failed: " + err);
-    });
+  Initialize().then(() => {
+    app.listen(HTTP_PORT, () => console.log("Server listening on " + HTTP_PORT));
+  });
+  
 }
-
+***/
