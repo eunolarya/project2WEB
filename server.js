@@ -67,17 +67,16 @@ app.use((req, res) => {
 
 
 if (process.env.VERCEL) {
-  
   module.exports = async (req, res) => {
     try {
       await Initialize();
       return app(req, res);
     } catch (err) {
      res.send("Initialization failed: " + err);
-
     }
   };
-} else {
+}
+ else {
   const HTTP_PORT = process.env.PORT || 8080;
   Initialize()
     .then(() => {
